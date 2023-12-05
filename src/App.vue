@@ -1,6 +1,8 @@
 <script lang="jsx">
 import {reactive, computed, nextTick} from 'vue'
 import {Search, CaretRight, CircleClose} from '@element-plus/icons-vue'
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
 export default {
   setup() {
     fetch('./data.json').then(res => {
@@ -26,7 +28,8 @@ export default {
     function selectItem(item) {
       state.current = {
         isShow: true,
-        url: item.url
+        url: item.url,
+        urls: item.urls || [item.url],
       }
     }
 
@@ -50,7 +53,12 @@ export default {
       </ul>
       {state.current.isShow && <div class="fullscreen">
         <el-icon onClick={() => state.current.isShow = false}><CircleClose /></el-icon>
-        {state.current.url.endsWith('.mp4') ? <video ref={loadVideo} src={state.current.url} controls autoplay></video> : <img src={state.current.url} />}
+        {state.current.url.endsWith('.mp4') 
+          ? <video ref={loadVideo} src={state.current.url} controls autoplay></video> 
+          : <Swiper>
+              {state.current.urls.map(s => <SwiperSlide><img src={s} /></SwiperSlide>)}
+            </Swiper>
+        }
       </div>}
     </div>
   }
