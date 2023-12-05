@@ -55,6 +55,11 @@ html,body,#app,.container{
   height: 100%;
   object-fit: cover;
 }
+.video-list img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .video-list p{
   line-height: 32px;
   padding: 0 4px;
@@ -78,7 +83,7 @@ html,body,#app,.container{
   top: 8px;
   z-index: 9;
 }
-.fullscreen video{
+.fullscreen video, .fullscreen img{
   width: 100%;
   height: 100%;
   object-fit: contain;

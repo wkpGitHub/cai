@@ -42,14 +42,15 @@ export default {
         {filterList.value.map(item => <li>
           <div class="video-box" onClick={() => selectItem(item)}>
             <el-icon><CaretRight /></el-icon>
-            <video src={item.url}></video>
+            {item.url.endsWith('.mp4') ? <video src={item.url}></video>
+            :<img src={item.url} />}
           </div>
           <p>{item.title}</p>  
         </li>)}
       </ul>
       {state.current.isShow && <div class="fullscreen">
         <el-icon onClick={() => state.current.isShow = false}><CircleClose /></el-icon>
-        <video ref={loadVideo} src={state.current.url} controls autoplay></video>
+        {state.current.url.endsWith('.mp4') ? <video ref={loadVideo} src={state.current.url} controls autoplay></video> : <img src={state.current.url} />}
       </div>}
     </div>
   }
