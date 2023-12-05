@@ -1,21 +1,26 @@
 <script lang="jsx">
 import {reactive, computed, nextTick} from 'vue'
 import {Search, CaretRight, CircleClose} from '@element-plus/icons-vue'
-import {list} from './data'
 export default {
   setup() {
+    fetch('./data.json').then(res => {
+      return res.json()
+    }).then(data => {
+      state.list = data
+    })
     const state = reactive({
-      list,
+      list: [],
       keyword: '',
       current: {
         isShow: false
       }
     })
     const filterList = computed(() => {
-      return state.list.filter(item => {
+      const _list = state.list.filter(item => {
         if (state.keyword.trim() === '') return state.list
         return item.title.indexOf(state.keyword.trim()) > -1
       })
+      return _list.slice(0, 20)
     })
 
     function selectItem(item) {
@@ -26,9 +31,9 @@ export default {
     }
 
     function loadVideo(video) {
-      nextTick(() => {
-        video?.webkitEnterFullscreen()
-      })
+      // nextTick(() => {
+      //   video?.webkitEnterFullscreen()
+      // })
     }
 
     return () => <div class="container">
