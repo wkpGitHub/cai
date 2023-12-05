@@ -40,8 +40,8 @@ export default {
       <ElInput v-model={state.keyword} placeholder="请输入名称查询" suffix-icon={Search}/>
       <ul class="video-list">
         {filterList.value.map(item => <li>
-          <div class="video-box">
-            <el-icon onClick={() => selectItem(item)}><CaretRight /></el-icon>
+          <div class="video-box" onClick={() => selectItem(item)}>
+            <el-icon><CaretRight /></el-icon>
             <video src={item.url}></video>
           </div>
           <p>{item.title}</p>  
