@@ -1,10 +1,10 @@
 <script lang="jsx">
-import {reactive, computed, nextTick} from 'vue'
-import {Search, CaretRight, CircleClose} from '@element-plus/icons-vue'
+import { reactive, computed } from 'vue'
+import { Search, CaretRight, CircleClose } from '@element-plus/icons-vue'
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 export default {
-  setup() {
+  setup () {
     fetch('./data.json').then(res => {
       return res.json()
     }).then(data => {
@@ -25,40 +25,32 @@ export default {
       return _list.slice(0, 20)
     })
 
-    function selectItem(item) {
+    function selectItem (item) {
       state.current = {
         isShow: true,
-        url: item.url,
-        urls: item.urls || [item.url],
+        urls: item.urls,
       }
     }
 
-    function loadVideo(video) {
-      // nextTick(() => {
-      //   video?.webkitEnterFullscreen()
-      // })
-    }
-
     return () => <div class="container">
-      <ElInput v-model={state.keyword} placeholder="请输入名称查询" suffix-icon={Search}/>
+      <ElInput v-model={state.keyword} placeholder="请输入名称查询" suffix-icon={Search} />
       <ul class="video-list">
         {filterList.value.map(item => <li>
           <div class="video-box" onClick={() => selectItem(item)}>
             <el-icon><CaretRight /></el-icon>
-            {item.url.endsWith('.mp4') ? <video src={item.url}></video>
-            :<img src={item.url} />}
+            {item.urls[0].endsWith('.mp4') ? <video src={item.urls[0]}></video>
+              : <img src={item.urls[0]} />}
           </div>
-          <p>{item.title}</p>  
+          <p>{item.title}</p>
         </li>)}
       </ul>
       {state.current.isShow && <div class="fullscreen">
         <el-icon onClick={() => state.current.isShow = false}><CircleClose /></el-icon>
-        {state.current.url.endsWith('.mp4') 
-          ? <video ref={loadVideo} src={state.current.url} controls autoplay></video> 
-          : <Swiper>
-              {state.current.urls.map(s => <SwiperSlide><img src={s} /></SwiperSlide>)}
-            </Swiper>
-        }
+        <Swiper>
+          {state.current.urls.map(s => <SwiperSlide>
+            {s.endsWith('.mp4') ? <video src={s} controls></video> : <img src={s} />}
+          </SwiperSlide>)}
+        </Swiper>
       </div>}
     </div>
   }
